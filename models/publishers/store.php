@@ -17,28 +17,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         try {
             require_once '../../config/connection.php';
-            $queryCheck = "select * from publishers where name = '$name'";
-            $check = $connection->query($queryCheck)->fetch();
+            include '../function.php';
+
+
+            $check = checkPublisherName($name);
             if ($check) {
                 echo json_encode("Platform allready exists!");
                 http_response_code(409);
             } else {
-                $queryInsert = "insert into publishers (name) values(?)";
-                $insert = $connection->prepare($queryInsert);
-                $insert->execute([$name]);
-
-                $querySelect = "select * from publishers";
-                $publishers = $connection->query($querySelect)->fetchAll();
+                insertNewPublisher($name);
 
                 echo json_encode([
-                    'platforms' => $publishers,
+                    'platforms' => getAllPublishers(),
+                    'pagination' => pagination('publishers'),
                     'message' => "New publisher has been added"
                 ]);
 
                 http_response_code(201);
             }
         } catch (PDOException $th) {
-            echo $th->getMessage();
+            echo json_encode("Something went wrong!");
             http_response_code(500);
         }
     }
