@@ -20,23 +20,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         try {
             require_once '../../config/connection.php';
-            $queryCheck = "select id, name from publishers where name = '$name'";
-            $check = $connection->query($queryCheck)->fetch();
+            include '../function.php';
+            $check = checkPublisherName($name);
             if ($check && $check->name == $name && $check->id != $id) {
                 echo json_encode("Publisher name is allready taken!");
                 http_response_code(409);
             } else {
-                $date = date("Y-m-d H:i:s");
-                $queryUpdate = "update publishers set name = ?, updated_at =? where id = ?";
-                $update = $connection->prepare($queryUpdate);
-                $update->execute([$name, $date, $id]);
-
-                $querySelect = "select * from publishers where id ='$id' ";
-                $select = $connection->query($querySelect)->fetch();
-                echo json_encode($select);
+                updatePublisher($name, $id);
+                $publisher = getPublisherFullRow($id);
+                echo json_encode($publisher);
             }
         } catch (PDOException $th) {
-            echo json_encode($th->getMessage());
+            echo json_encode("Something went wrong!");
             http_response_code(500);
         }
     }
