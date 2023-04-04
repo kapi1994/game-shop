@@ -3,10 +3,14 @@ header("Content-type:application/json");
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $id = $_GET['id'];
-    require_once '../../config/connection.php';
-    $query = "select id, name from platforms where id ='$id'";
-    $platform = $connection->query($query)->fetch();
-    echo json_encode($platform);
+    try {
+        require_once '../../config/connection.php';
+        $platform = getOnePlatform($i);
+        echo json_encode($platform);
+    } catch (PDOException $th) {
+        echo json_encode("Something went wrong!");
+        http_response_code(500);
+    }
 } else {
     http_response_code(404);
 }
