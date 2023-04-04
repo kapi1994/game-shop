@@ -17,26 +17,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         try {
             require_once '../../config/connection.php';
-            $queryCheck = "select name from platforms where name = '$name'";
-            $check = $connection->query($queryCheck)->fetch();
+            include '../function.php';
+            $check = checkPlatformName($name);
             if ($check) {
                 echo json_encode("Platform with this name allready exists");
                 http_response_code(422);
             } else {
-                $queryInsert = "insert into platforms (name) values (?)";
-                $insert = $connection->prepare($queryInsert);
-                $insert->execute([$name]);
 
-                $querySelect = "select * from platforms";
-                $select = $connection->query($querySelect)->fetchAll();
+                insertNewPlatform($name);
 
                 echo json_encode([
-                    'platforms' => $select,
+                    'platforms' => getAllPlatforms(),
+                    'pagination' => pagination('platforms'),
                     'message' => "Platform has been added"
                 ]);
             }
         } catch (PDOException $th) {
-            echo json_encode($th->getMessage());
+            echo json_encode("Something went wrong!");
             http_response_code(500);
         }
     }
