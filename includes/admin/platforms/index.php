@@ -1,9 +1,11 @@
 <?php
-$query = "select * from platforms";
-$platforms = $connection->query($query)->fetchAll();
+$platforms = getAllPlatforms();
+$pagintion = pagination('platforms');
+
 ?>
 <main class="container">
     <div class="row mt-5">
+        <div id="platforms_response_messages"></div>
         <div class="col-lg-8">
             <div class="table-responsive-sm table-responsive-md">
                 <table class="table text-center align-middle">
@@ -37,6 +39,17 @@ $platforms = $connection->query($query)->fetchAll();
                         endforeach; ?>
                     </tbody>
                 </table>
+            </div>
+            <div class="d-flex justify-content-center mt-2">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" id="platform_pagination_links">
+                        <?php
+                        for ($i = 0; $i < $pagintion; $i++) :
+                        ?>
+                            <li class="page-item platform_pagination_link" data-limit='<?= $i ?>'><a class="page-link <?php if ($i == 0) : ?> active <?php endif; ?>" href="#"><?= $i + 1 ?></a></li>
+                        <?php endfor; ?>
+                    </ul>
+                </nav>
             </div>
         </div>
         <div class="col-lg-4 py-2 mt-2 mt-lg-0">
