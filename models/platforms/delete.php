@@ -2,19 +2,17 @@
 header("Content-type:application/json");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
-    $status = $_POST['status'] == 0 ? 1  : 0;
+    $platforms = $_POST['status'];
 
     try {
         require '../../config/connection.php';
-        $queryUpdate = "update platforms set is_deleted = ? where id =?";
-        $update = $connection->prepare($queryUpdate);
-        $update->execute([$status, $id]);
+        include '../function.php';
+        changeStatus('platforms', $status, $id);
 
-        $querySelect = "select * from platforms where id='$id'";
-        $select = $connection->query($querySelect)->fetch();
-        echo json_encode($select);
+      $platform = getOnePlatform($id);
+      echo json_encode($platform);
     } catch (PDOException $th) {
-        echo json_encode($th->getMessage());
+        echo json_encode("Something went wrong!");
         http_response_code(500);
     }
 } else {
