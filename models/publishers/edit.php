@@ -2,10 +2,14 @@
 header("Content-type:application/json");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $id = $_GET['id'];
-    require '../../config/connection.php';
-    $query = "select id, name from publishers where id = '$id'";
-    $publisher = $connection->query($query)->fetch();
-    echo json_encode($publisher);
+    try {
+        require '../../config/connection.php';
+        $publisher = getPublisher($id);
+        echo json_encode($publisher);
+    } catch (PDOException $th) {
+        echo json_encode("Something went wrong!");
+        http_response_code(500);
+    }
 } else {
     http_response_code(404);
 }
