@@ -6,6 +6,7 @@ $publisherPagination = pagination('publishers');
 ?>
 <main class="container">
     <div class="row mt-5">
+        <div id="publisher_response_messages"></div>
         <div class="col-lg-8">
             <div class="table-responsive-sm table-responsive-md">
                 <table class="table text-center align-middle">
