@@ -2,23 +2,17 @@
 header("Content-type:application/json");
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $id = $_POST['id'];
-    $status = $_POST['status'] == 0 ? 1 : 0;
+    $status = $_POST['status'];
 
     try {
         require_once '../../config/connection.php';
-        $queryUpdate = "update games set is_deleted = ? where id =?";
-        $update = $connection->prepare($queryUpdate);
-        $update->execute([$status, $id]);
+        include '../function.php';
 
-        $querySelect = "select g.*, p.name as publisherName 
-        from games g join publishers p on g.publisher_id = p.id 
-        where g.id = '$id'";
-
-
-        $select = $connection->query($querySelect)->fetch();
-        echo json_encode($select);
+        changeStatus('games', $status, $id);
+        $game = getGameFullRow($id);
+        echo json_encode($game);
     } catch (PDOException $th) {
-        echo json_encode($th->getMessage());
+        echo json_encode("Something went wrong!");
         http_response_code(500);
     }
 } else {
