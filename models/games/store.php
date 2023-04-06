@@ -29,47 +29,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         require_once '../../config/connection.php';
-        $queryCheck = "select name from games where name ='$name'";
-        $check = $connection->query($queryCheck)->fetch();
+        $check = checkGameName($name);
         if ($check) {
             echo json_encode("That name is allready taken!");
             http_response_code(409);
         } else {
             try {
 
-
-                $connection->beginTransaction();
-
-                $queryInsert = "insert into games (name, description, publisher_id) values(?,?,?)";
-                $insertGame = $connection->prepare($queryInsert);
-                $insertGame->execute([$name, $description, $publisher]);
-                $last_id = $connection->lastInsertId();
-
-                $queryParamPivot = [];
-                $queryValuePivot = [];
-
-                foreach ($genres as $genre) {
-                    $queryParamPivot[] = "(?,?)";
-                    $queryValuePivot[] = (int)$last_id;
-                    $queryValuePivot[] = (int)$genre;
-                }
-
-                $queryInsertPivot = "insert into game_genre (game_id, genre_id) values" . implode(',', $queryParamPivot);
-                $insertPivot = $connection->prepare($queryInsertPivot);
-                $connection->commit();
-
-
-                $querySelect = "select g.*, p.name as publisherName from games g join publishers p on g.publisher_id = p.id ";
-                $games = $connection->query($querySelect)->fetchAll();
+                insertNewGame($name, $description, $publisher, $genres);
 
 
                 echo json_encode([
-                    'games' => $games,
+                    'games' => getAllGames(),
                     'messages' => 'Games has been inserted'
                 ]);
                 http_response_code(201);
             } catch (PDOException $th) {
-                $connection->rollBack();
+
                 echo json_encode($th->getMessage());
                 http_response_code(500);
             }
