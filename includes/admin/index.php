@@ -1,7 +1,5 @@
 <?php
-$queryOrders = "select u.first_name, u.last_name, o.created_at, o.id from orders o join users u on o.user_id = u.id";
-$orders = $connection->query($queryOrders)->fetchAll();
-
+$orders = getOrderForHomePage();
 ?>
 <main class="container">
     <div class="row mt-5">
