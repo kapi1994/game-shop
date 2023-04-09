@@ -1,6 +1,7 @@
 <main class="container">
     <div class="row mt-5">
         <div class="col-lg-4 mx-auto">
+            <div id="register_response_messages"></div>
             <form action="#">
                 <div class="mb-3">
                     <lable class="mb-1" for='first_name'>Ime</lable>
@@ -25,7 +26,7 @@
                 <div class="d-grid">
                     <button class="btn btn-primary" type="button" id="btnRegister">Registruj se</button>
                     <div class="d-flex mt-3 justify-content-center">
-                        Vec imate nalog? <a href="index.php?page=login" class="nav-link ms-2 text-primary">Uloguj se</a>
+                        Allready have an account? <a href="index.php?page=login" class="nav-link ms-2 text-primary">Log in</a>
                     </div>
                 </div>
             </form>

@@ -1,6 +1,7 @@
 <main class="container">
     <div class="row mt-5">
         <div class="col-lg-4 mx-auto">
+            <div id="login_response_messages"></div>
             <form action="#">
                 <div class="mb-3">
                     <label for="email" class="mb-1">Email</label>
@@ -15,7 +16,7 @@
                 <div class="d-grid">
                     <button class="btn btn-primary" type="button" id="btnLogIn">Log in</button>
                     <div class="d-flex justify-content-center mt-3">
-                        Nemate nalog? <a href="index.php?page=register" class="nav-link ms-2 text-primary">Registrujte se</a>
+                        Don't have an account? <a href="index.php?page=register" class="nav-link ms-2 text-primary">Register</a>
                     </div>
                 </div>
             </form>
