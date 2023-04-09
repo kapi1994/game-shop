@@ -1,18 +1,18 @@
 <?php
 
+$publisher = getPublisherForGames();
+$genres = getAllGenres();
 
-$queryPublishers = "select id, name from publishers";
-$publishers = $connection->query($queryPublishers)->fetchAll();
-$queryGenres = "select * from genres";
-$genres = $connection->query($queryGenres)->fetchAll();
-$gamesQuery  = "select g.*, p.name as platformName from games g join platforms p on g.publisher_id = p.id";
-$games = $connection->query($gamesQuery)->fetchAll();
 
 
 ?>
 <main class="container">
     <div class="row mt-5">
+        <div id="games_response_messages"></div>
         <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-4"><input type="text" name="search-game" id="search-game" class="form-control" placeholder="Search..."></div>
+            </div>
             <div class="table-responsive-sm table-responsive-md">
                 <table class="table text-center align-middle">
                     <thead>
@@ -27,26 +27,16 @@ $games = $connection->query($gamesQuery)->fetchAll();
                         </tr>
                     </thead>
                     <tbody id="games">
-                        <?php
-                        $index = 1;
-                        foreach ($games as $game) :
-                        ?>
-                            <tr id='game_<?= $index ?>'>
-                                <th scope="row"><?= $index ?></th>
-                                <td><?= $game->name ?></td>
-                                <td><?= $game->platformName ?></td>
-                                <td><?= date('d/m/Y H:i:s', strtotime($game->created_at)); ?></td>
-                                <td><?= $game->updated_at != null ? date('d/m/Y H:i:s', strtotime($game->updated_at)) : "-" ?></td>
-                                <td><a class="btn btn-primary btn-sm" href='admin.php?page=show&id=<?= $game->id ?>'>Editions</a></td>
-                                <td><button type="button" class="btn btn-sm btn-success btn-edit-game" data-id='<?= $game->id ?>' data-index='<?= $index ?>'>Edit</button></td>
-                                <td><button type="button" class="btn btn-sm btn-danger btn-delete-game" data-id='<?= $game->id ?>' data-index='<?= $index ?>' data-status='<?= $game->is_deleted ?>'>
-                                        <?= $game->is_deleted == 0 ? "Delete" : "Activate" ?>
-                                    </button></td>
-                            </tr>
-                        <?php $index++;
-                        endforeach; ?>
+
                     </tbody>
                 </table>
+            </div>
+            <div class="d-flex justify-content-center mt-2">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" id="game-pagiation-links">
+
+                    </ul>
+                </nav>
             </div>
         </div>
         <div class="col-lg-4 mt-2 mt-lg-0 my-2">
