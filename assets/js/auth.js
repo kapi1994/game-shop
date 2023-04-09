@@ -21,7 +21,11 @@ $(document).ready(function () {
           window.location.href = "index.php?page=login";
         },
         error: function (jqXHR, statusTxt, xhr) {
-          console.log(jqXHR);
+          createResponseMessages(
+            "danger",
+            jqXHR.responseJSON,
+            "register_response_messages"
+          );
         },
       });
     }
@@ -45,7 +49,11 @@ $(document).ready(function () {
           }
         },
         error: function (jqXHR, statusTxt, xhr) {
-          console.log(jqXHR);
+          createResponseMessages(
+            "danger",
+            jqXHR.responseJSON,
+            "login_response_messages"
+          );
         },
       });
     }
