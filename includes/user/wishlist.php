@@ -21,10 +21,11 @@ $wishlistItems = wishlistItems($user_id);
                 foreach ($wishlistItems as $wishlistItem) : ?>
                     <div class="col-lg-3 col-6 mb-2">
                         <div class="card h-100">
-                            <img src="assets/img/<?= $wishlistItem->image_path ?>" class="img-card" alt="...">
+                            <img src="assets/img/<?= $wishlistItem->image_path ?>" class="img-fluid" alt="...">
                             <div class="card-body text-center">
                                 <h3 class="card-title"><?= $wishlistItem->platformName . ' - ' . $wishlistItem->gameName ?></h3>
                                 <h5 class="fw-bold"><?= "(" . $wishlistItem->editionName . ' ' . " Edition) " ?></h5>
+
                                 <div class="d-block text-lg-end text-uppercase fw-bold"><?= $wishlistItem->price . '.00 RSD' ?></div>
                             </div>
                             <div class="card-footer">
