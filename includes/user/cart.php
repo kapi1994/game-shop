@@ -19,7 +19,7 @@ $cartItems = cartItems($user_id);
                 <?php else :
                 foreach ($cartItems as $cartItem) : ?>
                     <div class="col-lg-3 col-6 mb-2">
-                        <div class="card h-100">
+                        <div class="card">
                             <img src="assets/img/<?= $cartItem->image_path ?>" class="img-card" alt="...">
                             <div class="card-body text-center h-100">
                                 <h3 class="card-title"><?= $cartItem->platformName . ' - ' . $cartItem->gameName ?></h3>
