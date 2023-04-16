@@ -12,7 +12,7 @@ function removeValidationErrorMessage(elementId) {
   elemenet.textContent = "";
 }
 
-function validainteInputElement(
+function validateInputElement(
   elementId,
   reElement,
   arrayErrors,
@@ -62,9 +62,20 @@ function getSelectedCheckboxeValues(checkBoxArray, array) {
   return array;
 }
 
-// ! dodati funkciju za ispisivanje datuma i vremena
 function dateFormater(date) {
-  console.log(date);
+  const dateTimeStamp = Date.parse(date);
+  const dateTime = new Date(dateTimeStamp);
+  const day = String(dateTime.getDate()).padStart(2, 0);
+  const month = String(dateTime.getMonth() + 1).padStart(2, 0);
+  const year = dateTime.getFullYear();
+
+  const hour = String(dateTime.getHours()).padStart(2, 0);
+  const minutes = String(dateTime.getMinutes()).padStart(2, 0);
+  const seconds = String(dateTime.getSeconds()).padStart(2, 0);
+
+  const newDateTimeFormat =
+    day + "/" + month + "/" + year + " " + hour + ":" + minutes + ":" + seconds;
+  return newDateTimeFormat;
 }
 
 function printPagination(pages, limit, whereToPlace, cls = "") {
@@ -78,4 +89,50 @@ function printPagination(pages, limit, whereToPlace, cls = "") {
     `;
   }
   document.querySelector(`#${whereToPlace}`).innerHTML = content;
+}
+
+function printPaginationLinks(pages, limit, whereToPlace, links) {
+  let content = "";
+  for (let i = 0; i < pages; i++) {
+    let activeClass = i == limit ? "active" : "";
+    content += `
+    <li class="page-item  ${activeClass}"><a class="page-link" href="${links}&limit=${i}">${
+      i + 1
+    }</a></li>
+    `;
+  }
+  document.contains(document.querySelector(`#${whereToPlace}`))
+    ? (document.querySelector(`#${whereToPlace}`).innerHTML = content)
+    : "";
+}
+
+function createResponseMessages(color, message, whereToPlace) {
+  let content = `<div class="alert alert-${color} alert-dismissible fade show text-center" role="alert">
+ ${message}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>`;
+  document.querySelector(`#${whereToPlace}`).innerHTML = content;
+}
+
+function validateInputFileElement(
+  elemenet,
+  errorArray,
+  errorElementId,
+  errorMessage
+) {
+  if (elemenet.length == 0) {
+    errorArray.push(errorMessage);
+    createValidationErrorMessage(errorElementId, errorMessage);
+  } else {
+    removeValidationErrorMessage(errorElementId);
+  }
+}
+
+function validateRadioInput(radioElement, errorArray, elementId, errorMessage) {
+  if (radioElement == null) {
+    createValidationErrorMessage(elementId, errorMessage);
+    errorArray.push(errorMessage);
+  } else {
+    removeValidationErrorMessage(elementId);
+  }
 }
