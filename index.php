@@ -13,6 +13,8 @@ if (isset($_GET['page'])) {
         case 'register':
             include 'includes/auth/register.php';
             break;
+        case 'admin':
+            
     }
 }
 include 'includes/fixed/footer.php';
